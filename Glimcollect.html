@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Form</title>
+  <style>
+    /* ✦ Customise freely below ✦ */
+    body {
+      font-family: 'Garamond', serif;
+      background: #ecfcdc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    p.subtitle { color: #666; margin-bottom: 1.5rem; font-size: 1.2rem; }
+    label { display: block; font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: #7c6ff7; outline: none; }
+    button {
+      background: #0ba810;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover { background: #0ba810; }
+    #success { display: none; text-align: center; padding: 2rem 0; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div id="form-section">
+    <h1>Glimmer Collecting ☆</h1>
+    <p class="subtitle">A glimmer is something that signals: You're not alone, you are safe, and you have the capacity for happiness and joy.</p>
+
+    <form id="myForm">
+      <label for="glimmer">What was the glimmer?</label>
+      <input type="text" id="glimmer" placeholder="maybe's presence" required />
+
+      <label for="body">How did it feel in the body?</label>
+      <input type="text" id="body" placeholder="warm and tingly" required />
+
+      <label for="future">Any thoughts for your future self?</label>
+      <textarea id="future" rows="4" placeholder="You are capable of joy"></textarea>
+
+      <button type="submit">Collect it🌼→</button>
+    </form>
+  </div>
+
+  <div id="success">
+    <p style="font-size:2rem">🎉</p>
+    <h2>Love you!</h2>
+    <p style="color:#666">You'll feel better soon.</p>
+  </div>
+</div>
+
+<script>
+  // ✦ PASTE YOUR GOOGLE FORM'S ACTION URL HERE ✦
+  // (looks like: https://docs.google.com/forms/d/e/XXXXX/formResponse)
+  const FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeEeNt-nGG4U3g6MYAiZp3at8boBS0ZygcM-aGYekwELcvA-Q/formResponse";
+
+  // ✦ MAP YOUR FIELDS TO entry.XXXXXXXXX NAMES ✦
+  // Get these by right-clicking your Google Form > Inspect > search "entry."
+  const FIELD_MAP = {
+    glimmer:    "entry.988971417",
+    body:   "entry.904071877",
+    future: "entry.1461957461",
+  };
+
+  document.getElementById("myForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const body = new FormData();
+    body.append(FIELD_MAP.glimmer,    document.getElementById("glimmer").value);
+    body.append(FIELD_MAP.body,   document.getElementById("body").value);
+    body.append(FIELD_MAP.future, document.getElementById("future").value);
+
+    // no-cors because Google doesn't allow cross-origin reads — but the submit still works!
+    await fetch(FORM_URL, { method: "POST", mode: "no-cors", body });
+
+    document.getElementById("form-section").style.display = "none";
+    document.getElementById("success").style.display = "block";
+  });
+</script>
+</body>
+</html>
